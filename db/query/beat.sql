@@ -6,10 +6,9 @@ INSERT INTO beats (
     key,
     bpm,
     tags,
-    s3_key,
-    likes_count
+    s3_key
 ) VALUES (
-    $1, $2, $3, $4, $5, $6, $7, $8
+    $1, $2, $3, $4, $5, $6, $7
 ) RETURNING *;
 
 -- name: GetBeatById :one
@@ -79,14 +78,7 @@ SET title = $2,
     key = $4,
     bpm = $5,
     tags = $6,
-    s3_key = $7,
-    likes_count = $8
-WHERE id = $1
-RETURNING *;
-
--- name: UpdateBeatLikesCount :one
-UPDATE beats
-SET likes_count = $2
+    s3_key = $7
 WHERE id = $1
 RETURNING *;
 

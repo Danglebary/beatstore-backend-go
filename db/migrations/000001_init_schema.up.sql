@@ -15,7 +15,6 @@ CREATE TABLE "beats" (
     "bpm" smallint NOT NULL,
     "tags" VARCHAR NOT NULL,
     "s3_key" VARCHAR NOT NULL,
-    "likes_count" bigint NOT NULL DEFAULT 0,
     "created_at" timestamptz NOT NULL DEFAULT (now())
 );
 

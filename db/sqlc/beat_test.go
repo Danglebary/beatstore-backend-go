@@ -76,14 +76,13 @@ func TestUpdateBeat(t *testing.T) {
 	beat1 := createRandomBeat(t)
 
 	arg := UpdateBeatParams{
-		ID:         beat1.ID,
-		Title:      util.RandomTitle(),
-		Genre:      util.RandomGenre(),
-		Key:        util.RandomKey(),
-		Bpm:        util.RandomBpm(),
-		Tags:       util.RandomTags(),
-		S3Key:      util.RandomS3Key(),
-		LikesCount: util.RandomLikesCount(),
+		ID:    beat1.ID,
+		Title: util.RandomTitle(),
+		Genre: util.RandomGenre(),
+		Key:   util.RandomKey(),
+		Bpm:   util.RandomBpm(),
+		Tags:  util.RandomTags(),
+		S3Key: util.RandomS3Key(),
 	}
 
 	beat2, err := testQueries.UpdateBeat(context.Background(), arg)
@@ -97,7 +96,6 @@ func TestUpdateBeat(t *testing.T) {
 	require.Equal(t, arg.Bpm, beat2.Bpm)
 	require.Equal(t, arg.Tags, beat2.Tags)
 	require.Equal(t, arg.S3Key, beat2.S3Key)
-	require.Equal(t, arg.LikesCount, beat2.LikesCount)
 	require.WithinDuration(t, beat1.CreatedAt, beat2.CreatedAt, time.Second)
 
 	deleteRandomBeat(t, beat1.ID)
@@ -117,7 +115,6 @@ func TestGetBeatById(t *testing.T) {
 	require.Equal(t, beat1.Genre, beat2.Genre)
 	require.Equal(t, beat1.Key, beat2.Key)
 	require.Equal(t, beat1.Bpm, beat2.Bpm)
-	require.Equal(t, beat1.LikesCount, beat2.LikesCount)
 	require.Equal(t, beat1.S3Key, beat2.S3Key)
 	require.WithinDuration(t, beat1.CreatedAt, beat2.CreatedAt, time.Second)
 
@@ -189,14 +186,13 @@ func TestListBeatsbyGenre(t *testing.T) {
 	for i := 0; i < n; i++ {
 		user := createRandomUser(t)
 		args := CreateBeatParams{
-			CreatorID:  user.ID,
-			Title:      util.RandomTitle(),
-			Genre:      genre,
-			Key:        util.RandomKey(),
-			Bpm:        util.RandomBpm(),
-			Tags:       util.RandomTags(),
-			S3Key:      util.RandomS3Key(),
-			LikesCount: util.RandomLikesCount(),
+			CreatorID: user.ID,
+			Title:     util.RandomTitle(),
+			Genre:     genre,
+			Key:       util.RandomKey(),
+			Bpm:       util.RandomBpm(),
+			Tags:      util.RandomTags(),
+			S3Key:     util.RandomS3Key(),
 		}
 		createRandomBeatWithArgs(t, args)
 	}
@@ -226,14 +222,13 @@ func TestListBeatsByKey(t *testing.T) {
 	for i := 0; i < n; i++ {
 		user := createRandomUser(t)
 		args := CreateBeatParams{
-			CreatorID:  user.ID,
-			Title:      util.RandomTitle(),
-			Genre:      util.RandomGenre(),
-			Key:        key,
-			Bpm:        util.RandomBpm(),
-			Tags:       util.RandomTags(),
-			S3Key:      util.RandomS3Key(),
-			LikesCount: util.RandomLikesCount(),
+			CreatorID: user.ID,
+			Title:     util.RandomTitle(),
+			Genre:     util.RandomGenre(),
+			Key:       key,
+			Bpm:       util.RandomBpm(),
+			Tags:      util.RandomTags(),
+			S3Key:     util.RandomS3Key(),
 		}
 		createRandomBeatWithArgs(t, args)
 	}
@@ -264,14 +259,13 @@ func TestListBeatsByBpmRange(t *testing.T) {
 	for i := 0; i < n; i++ {
 		user := createRandomUser(t)
 		args := CreateBeatParams{
-			CreatorID:  user.ID,
-			Title:      util.RandomTitle(),
-			Genre:      util.RandomGenre(),
-			Key:        util.RandomKey(),
-			Bpm:        int16(util.RandomInt(int64(min), int64(max))),
-			Tags:       util.RandomTags(),
-			S3Key:      util.RandomS3Key(),
-			LikesCount: util.RandomLikesCount(),
+			CreatorID: user.ID,
+			Title:     util.RandomTitle(),
+			Genre:     util.RandomGenre(),
+			Key:       util.RandomKey(),
+			Bpm:       int16(util.RandomInt(int64(min), int64(max))),
+			Tags:      util.RandomTags(),
+			S3Key:     util.RandomS3Key(),
 		}
 		createRandomBeatWithArgs(t, args)
 	}
@@ -303,14 +297,13 @@ func TestListBeatsByCreatorIdAndGenre(t *testing.T) {
 	n := 10
 	for i := 0; i < n; i++ {
 		args := CreateBeatParams{
-			CreatorID:  user1.ID,
-			Title:      util.RandomTitle(),
-			Genre:      genre,
-			Key:        util.RandomKey(),
-			Bpm:        util.RandomBpm(),
-			Tags:       util.RandomTags(),
-			S3Key:      util.RandomS3Key(),
-			LikesCount: util.RandomLikesCount(),
+			CreatorID: user1.ID,
+			Title:     util.RandomTitle(),
+			Genre:     genre,
+			Key:       util.RandomKey(),
+			Bpm:       util.RandomBpm(),
+			Tags:      util.RandomTags(),
+			S3Key:     util.RandomS3Key(),
 		}
 		createRandomBeatWithArgs(t, args)
 	}
@@ -342,14 +335,13 @@ func TestListBeatsByCreatorIdAndKey(t *testing.T) {
 	n := 10
 	for i := 0; i < n; i++ {
 		args := CreateBeatParams{
-			CreatorID:  user1.ID,
-			Title:      util.RandomTitle(),
-			Genre:      util.RandomGenre(),
-			Key:        key,
-			Bpm:        util.RandomBpm(),
-			Tags:       util.RandomTags(),
-			S3Key:      util.RandomS3Key(),
-			LikesCount: util.RandomLikesCount(),
+			CreatorID: user1.ID,
+			Title:     util.RandomTitle(),
+			Genre:     util.RandomGenre(),
+			Key:       key,
+			Bpm:       util.RandomBpm(),
+			Tags:      util.RandomTags(),
+			S3Key:     util.RandomS3Key(),
 		}
 		createRandomBeatWithArgs(t, args)
 	}
@@ -382,14 +374,13 @@ func TestListBeatsByCreatorIdAndBpmRange(t *testing.T) {
 	n := 10
 	for i := 0; i < n; i++ {
 		args := CreateBeatParams{
-			CreatorID:  user1.ID,
-			Title:      util.RandomTitle(),
-			Genre:      util.RandomGenre(),
-			Key:        util.RandomKey(),
-			Bpm:        int16(util.RandomInt(int64(min), int64(max))),
-			Tags:       util.RandomTags(),
-			S3Key:      util.RandomS3Key(),
-			LikesCount: util.RandomLikesCount(),
+			CreatorID: user1.ID,
+			Title:     util.RandomTitle(),
+			Genre:     util.RandomGenre(),
+			Key:       util.RandomKey(),
+			Bpm:       int16(util.RandomInt(int64(min), int64(max))),
+			Tags:      util.RandomTags(),
+			S3Key:     util.RandomS3Key(),
 		}
 		createRandomBeatWithArgs(t, args)
 	}
