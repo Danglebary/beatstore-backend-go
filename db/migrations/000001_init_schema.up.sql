@@ -40,7 +40,7 @@ ALTER TABLE
 ADD
     FOREIGN KEY ("beat_id") REFERENCES "beats" ("id");
 
-CREATE INDEX ON "beats" ("creator");
+CREATE INDEX ON "beats" ("creator_id");
 
 CREATE INDEX ON "beats" ("key");
 
