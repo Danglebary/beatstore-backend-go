@@ -10,7 +10,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func CreateRandomUser(t *testing.T) User {
+func createRandomUser(t *testing.T) User {
 	arg := CreateUserParams{
 		Username: util.RandomUsername(),
 		Password: util.RandomPassword(),
@@ -31,18 +31,18 @@ func CreateRandomUser(t *testing.T) User {
 	return user
 }
 
-func DeleteRandomUser(t *testing.T, id int32) {
+func deleteRandomUser(t *testing.T, id int32) {
 	err := testQueries.DeleteUser(context.Background(), id)
 	require.NoError(t, err)
 }
 
 func TestCreateUser(t *testing.T) {
-	user := CreateRandomUser(t)
-	DeleteRandomUser(t, user.ID)
+	user := createRandomUser(t)
+	deleteRandomUser(t, user.ID)
 }
 
 func TestGetUserById(t *testing.T) {
-	user1 := CreateRandomUser(t)
+	user1 := createRandomUser(t)
 	user2, err := testQueries.GetUserById(context.Background(), user1.ID)
 	require.NoError(t, err)
 	require.NotEmpty(t, user2)
@@ -53,11 +53,11 @@ func TestGetUserById(t *testing.T) {
 	require.Equal(t, user1.Email, user2.Email)
 	require.WithinDuration(t, user1.CreatedAt, user2.CreatedAt, time.Second)
 
-	DeleteRandomUser(t, user1.ID)
+	deleteRandomUser(t, user1.ID)
 }
 
 func TestGetUserByUsername(t *testing.T) {
-	user1 := CreateRandomUser(t)
+	user1 := createRandomUser(t)
 	user2, err := testQueries.GetUserByUsername(context.Background(), user1.Username)
 	require.NoError(t, err)
 	require.NotEmpty(t, user2)
@@ -68,13 +68,13 @@ func TestGetUserByUsername(t *testing.T) {
 	require.Equal(t, user1.Email, user2.Email)
 	require.WithinDuration(t, user1.CreatedAt, user2.CreatedAt, time.Second)
 
-	DeleteRandomUser(t, user1.ID)
+	deleteRandomUser(t, user1.ID)
 }
 
 func TestListUsersById(t *testing.T) {
 	n := 10
 	for i := 0; i < n; i++ {
-		CreateRandomUser(t)
+		createRandomUser(t)
 	}
 	arg := ListUsersByIdParams{
 		Limit:  int32(n),
@@ -87,14 +87,14 @@ func TestListUsersById(t *testing.T) {
 
 	for _, user := range users {
 		require.NotEmpty(t, user)
-		DeleteRandomUser(t, user.ID)
+		deleteRandomUser(t, user.ID)
 	}
 }
 
 func TestListUsersByUsername(t *testing.T) {
 	n := 10
 	for i := 0; i < n; i++ {
-		CreateRandomUser(t)
+		createRandomUser(t)
 	}
 	arg := ListUsersByUsernameParams{
 		Limit:  int32(n),
@@ -107,12 +107,12 @@ func TestListUsersByUsername(t *testing.T) {
 
 	for _, user := range users {
 		require.NotEmpty(t, user)
-		DeleteRandomUser(t, user.ID)
+		deleteRandomUser(t, user.ID)
 	}
 }
 
 func TestUpdateUser(t *testing.T) {
-	user1 := CreateRandomUser(t)
+	user1 := createRandomUser(t)
 	arg := UpdateUserParams{
 		ID:       user1.ID,
 		Username: util.RandomUsername(),
@@ -129,11 +129,11 @@ func TestUpdateUser(t *testing.T) {
 	require.Equal(t, arg.Email, user2.Email)
 	require.WithinDuration(t, user1.CreatedAt, user2.CreatedAt, time.Second)
 
-	DeleteRandomUser(t, user1.ID)
+	deleteRandomUser(t, user1.ID)
 }
 
 func TestDeleteUser(t *testing.T) {
-	user1 := CreateRandomUser(t)
+	user1 := createRandomUser(t)
 	err := testQueries.DeleteUser(context.Background(), user1.ID)
 	require.NoError(t, err)
 

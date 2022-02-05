@@ -10,8 +10,8 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func CreateRandomBeat(t *testing.T) Beat {
-	user1 := CreateRandomUser(t)
+func createRandomBeat(t *testing.T) Beat {
+	user1 := createRandomUser(t)
 
 	arg := CreateBeatParams{
 		CreatorID: user1.ID,
@@ -60,20 +60,20 @@ func createRandomBeatWithArgs(t *testing.T, arg CreateBeatParams) Beat {
 	return beat
 }
 
-func DeleteRandomBeat(t *testing.T, id int32) {
+func deleteRandomBeat(t *testing.T, id int32) {
 	err := testQueries.DeleteBeat(context.Background(), id)
 	require.NoError(t, err)
 }
 
 func TestCreateBeat(t *testing.T) {
-	beat1 := CreateRandomBeat(t)
+	beat1 := createRandomBeat(t)
 
-	DeleteRandomBeat(t, beat1.ID)
-	DeleteRandomUser(t, beat1.CreatorID)
+	deleteRandomBeat(t, beat1.ID)
+	deleteRandomUser(t, beat1.CreatorID)
 }
 
 func TestUpdateBeat(t *testing.T) {
-	beat1 := CreateRandomBeat(t)
+	beat1 := createRandomBeat(t)
 
 	arg := UpdateBeatParams{
 		ID:         beat1.ID,
@@ -100,12 +100,12 @@ func TestUpdateBeat(t *testing.T) {
 	require.Equal(t, arg.LikesCount, beat2.LikesCount)
 	require.WithinDuration(t, beat1.CreatedAt, beat2.CreatedAt, time.Second)
 
-	DeleteRandomBeat(t, beat1.ID)
-	DeleteRandomUser(t, beat1.CreatorID)
+	deleteRandomBeat(t, beat1.ID)
+	deleteRandomUser(t, beat1.CreatorID)
 }
 
 func TestGetBeatById(t *testing.T) {
-	beat1 := CreateRandomBeat(t)
+	beat1 := createRandomBeat(t)
 
 	beat2, err := testQueries.GetBeatById(context.Background(), beat1.ID)
 	require.NoError(t, err)
@@ -121,14 +121,14 @@ func TestGetBeatById(t *testing.T) {
 	require.Equal(t, beat1.S3Key, beat2.S3Key)
 	require.WithinDuration(t, beat1.CreatedAt, beat2.CreatedAt, time.Second)
 
-	DeleteRandomBeat(t, beat1.ID)
-	DeleteRandomUser(t, beat1.CreatorID)
+	deleteRandomBeat(t, beat1.ID)
+	deleteRandomUser(t, beat1.CreatorID)
 }
 
 func TestListBeatsById(t *testing.T) {
 	n := 10
 	for i := 0; i < n; i++ {
-		CreateRandomBeat(t)
+		createRandomBeat(t)
 	}
 	arg := ListBeatsByIdParams{
 		Limit:  int32(n),
@@ -141,13 +141,13 @@ func TestListBeatsById(t *testing.T) {
 
 	for _, beat := range beats {
 		require.NotEmpty(t, beat)
-		DeleteRandomBeat(t, beat.ID)
-		DeleteRandomUser(t, beat.CreatorID)
+		deleteRandomBeat(t, beat.ID)
+		deleteRandomUser(t, beat.CreatorID)
 	}
 }
 
 func TestListBeatsByCreatorId(t *testing.T) {
-	user1 := CreateRandomUser(t)
+	user1 := createRandomUser(t)
 
 	beatArg := CreateBeatParams{
 		CreatorID: user1.ID,
@@ -176,10 +176,10 @@ func TestListBeatsByCreatorId(t *testing.T) {
 
 	for _, beat := range beats {
 		require.NotEmpty(t, beat)
-		DeleteRandomBeat(t, beat.ID)
+		deleteRandomBeat(t, beat.ID)
 	}
 
-	DeleteRandomUser(t, user1.ID)
+	deleteRandomUser(t, user1.ID)
 }
 
 func TestListBeatsbyGenre(t *testing.T) {
@@ -187,7 +187,7 @@ func TestListBeatsbyGenre(t *testing.T) {
 
 	n := 10
 	for i := 0; i < n; i++ {
-		user := CreateRandomUser(t)
+		user := createRandomUser(t)
 		args := CreateBeatParams{
 			CreatorID:  user.ID,
 			Title:      util.RandomTitle(),
@@ -214,8 +214,8 @@ func TestListBeatsbyGenre(t *testing.T) {
 	for _, beat := range beats {
 		require.NotEmpty(t, beat)
 		require.Equal(t, genre, beat.Genre)
-		DeleteRandomBeat(t, beat.ID)
-		DeleteRandomUser(t, beat.CreatorID)
+		deleteRandomBeat(t, beat.ID)
+		deleteRandomUser(t, beat.CreatorID)
 	}
 }
 
@@ -224,7 +224,7 @@ func TestListBeatsByKey(t *testing.T) {
 
 	n := 10
 	for i := 0; i < n; i++ {
-		user := CreateRandomUser(t)
+		user := createRandomUser(t)
 		args := CreateBeatParams{
 			CreatorID:  user.ID,
 			Title:      util.RandomTitle(),
@@ -251,8 +251,8 @@ func TestListBeatsByKey(t *testing.T) {
 	for _, beat := range beats {
 		require.NotEmpty(t, beat)
 		require.Equal(t, key, beat.Key)
-		DeleteRandomBeat(t, beat.ID)
-		DeleteRandomUser(t, beat.CreatorID)
+		deleteRandomBeat(t, beat.ID)
+		deleteRandomUser(t, beat.CreatorID)
 	}
 }
 
@@ -262,7 +262,7 @@ func TestListBeatsByBpmRange(t *testing.T) {
 
 	n := 10
 	for i := 0; i < n; i++ {
-		user := CreateRandomUser(t)
+		user := createRandomUser(t)
 		args := CreateBeatParams{
 			CreatorID:  user.ID,
 			Title:      util.RandomTitle(),
@@ -291,13 +291,13 @@ func TestListBeatsByBpmRange(t *testing.T) {
 		require.NotEmpty(t, beat)
 		require.GreaterOrEqual(t, beat.Bpm, int16(min))
 		require.LessOrEqual(t, beat.Bpm, int16(max))
-		DeleteRandomBeat(t, beat.ID)
-		DeleteRandomUser(t, beat.CreatorID)
+		deleteRandomBeat(t, beat.ID)
+		deleteRandomUser(t, beat.CreatorID)
 	}
 }
 
 func TestListBeatsByCreatorIdAndGenre(t *testing.T) {
-	user1 := CreateRandomUser(t)
+	user1 := createRandomUser(t)
 	genre := util.RandomGenre()
 
 	n := 10
@@ -330,13 +330,13 @@ func TestListBeatsByCreatorIdAndGenre(t *testing.T) {
 		require.NotEmpty(t, beat)
 		require.Equal(t, user1.ID, beat.CreatorID)
 		require.Equal(t, genre, beat.Genre)
-		DeleteRandomBeat(t, beat.ID)
+		deleteRandomBeat(t, beat.ID)
 	}
-	DeleteRandomUser(t, user1.ID)
+	deleteRandomUser(t, user1.ID)
 }
 
 func TestListBeatsByCreatorIdAndKey(t *testing.T) {
-	user1 := CreateRandomUser(t)
+	user1 := createRandomUser(t)
 	key := util.RandomKey()
 
 	n := 10
@@ -369,13 +369,13 @@ func TestListBeatsByCreatorIdAndKey(t *testing.T) {
 		require.NotEmpty(t, beat)
 		require.Equal(t, user1.ID, beat.CreatorID)
 		require.Equal(t, key, beat.Key)
-		DeleteRandomBeat(t, beat.ID)
+		deleteRandomBeat(t, beat.ID)
 	}
-	DeleteRandomUser(t, user1.ID)
+	deleteRandomUser(t, user1.ID)
 }
 
 func TestListBeatsByCreatorIdAndBpmRange(t *testing.T) {
-	user1 := CreateRandomUser(t)
+	user1 := createRandomUser(t)
 	min := 100
 	max := 200
 
@@ -411,13 +411,13 @@ func TestListBeatsByCreatorIdAndBpmRange(t *testing.T) {
 		require.Equal(t, user1.ID, beat.CreatorID)
 		require.GreaterOrEqual(t, beat.Bpm, int16(min))
 		require.LessOrEqual(t, beat.Bpm, int16(max))
-		DeleteRandomBeat(t, beat.ID)
+		deleteRandomBeat(t, beat.ID)
 	}
-	DeleteRandomUser(t, user1.ID)
+	deleteRandomUser(t, user1.ID)
 }
 
 func TestDeleteBeat(t *testing.T) {
-	beat1 := CreateRandomBeat(t)
+	beat1 := createRandomBeat(t)
 	err := testQueries.DeleteBeat(context.Background(), beat1.ID)
 	require.NoError(t, err)
 
@@ -426,5 +426,5 @@ func TestDeleteBeat(t *testing.T) {
 	require.EqualError(t, err, sql.ErrNoRows.Error())
 	require.Empty(t, beat2)
 
-	DeleteRandomUser(t, beat1.CreatorID)
+	deleteRandomUser(t, beat1.CreatorID)
 }
