@@ -96,11 +96,11 @@ func TestListUsersByUsername(t *testing.T) {
 	for i := 0; i < n; i++ {
 		createRandomUser(t)
 	}
-	arg := ListUsersByIdParams{
+	arg := ListUsersByUsernameParams{
 		Limit:  5,
 		Offset: 5,
 	}
-	users, err := testQueries.ListUsersById(context.Background(), arg)
+	users, err := testQueries.ListUsersByUsername(context.Background(), arg)
 	require.NoError(t, err)
 	require.NotEmpty(t, users)
 	require.Equal(t, 5, len(users))
