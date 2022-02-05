@@ -26,7 +26,3 @@ func TestCreateUser(t *testing.T) {
 	require.NotZero(t, user.ID)
 	require.NotZero(t, user.CreatedAt)
 }
-
-func RandomUserName() {
-	panic("unimplemented")
-}
