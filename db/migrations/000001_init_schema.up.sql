@@ -28,7 +28,7 @@ CREATE TABLE "likes" (
 ALTER TABLE
     "beats"
 ADD
-    FOREIGN KEY ("creator") REFERENCES "users" ("id");
+    FOREIGN KEY ("creator_id") REFERENCES "users" ("id");
 
 ALTER TABLE
     "likes"
