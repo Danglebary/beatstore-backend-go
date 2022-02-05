@@ -7,16 +7,15 @@ import (
 )
 
 type Beat struct {
-	ID         int32     `json:"id"`
-	CreatorID  int32     `json:"creator_id"`
-	Title      string    `json:"title"`
-	Genre      string    `json:"genre"`
-	Key        string    `json:"key"`
-	Bpm        int16     `json:"bpm"`
-	Tags       string    `json:"tags"`
-	S3Key      string    `json:"s3_key"`
-	LikesCount int64     `json:"likes_count"`
-	CreatedAt  time.Time `json:"created_at"`
+	ID        int32     `json:"id"`
+	CreatorID int32     `json:"creator_id"`
+	Title     string    `json:"title"`
+	Genre     string    `json:"genre"`
+	Key       string    `json:"key"`
+	Bpm       int16     `json:"bpm"`
+	Tags      string    `json:"tags"`
+	S3Key     string    `json:"s3_key"`
+	CreatedAt time.Time `json:"created_at"`
 }
 
 type Like struct {

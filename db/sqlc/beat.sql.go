@@ -15,22 +15,20 @@ INSERT INTO beats (
     key,
     bpm,
     tags,
-    s3_key,
-    likes_count
+    s3_key
 ) VALUES (
-    $1, $2, $3, $4, $5, $6, $7, $8
-) RETURNING id, creator_id, title, genre, key, bpm, tags, s3_key, likes_count, created_at
+    $1, $2, $3, $4, $5, $6, $7
+) RETURNING id, creator_id, title, genre, key, bpm, tags, s3_key, created_at
 `
 
 type CreateBeatParams struct {
-	CreatorID  int32  `json:"creator_id"`
-	Title      string `json:"title"`
-	Genre      string `json:"genre"`
-	Key        string `json:"key"`
-	Bpm        int16  `json:"bpm"`
-	Tags       string `json:"tags"`
-	S3Key      string `json:"s3_key"`
-	LikesCount int64  `json:"likes_count"`
+	CreatorID int32  `json:"creator_id"`
+	Title     string `json:"title"`
+	Genre     string `json:"genre"`
+	Key       string `json:"key"`
+	Bpm       int16  `json:"bpm"`
+	Tags      string `json:"tags"`
+	S3Key     string `json:"s3_key"`
 }
 
 func (q *Queries) CreateBeat(ctx context.Context, arg CreateBeatParams) (Beat, error) {
@@ -42,7 +40,6 @@ func (q *Queries) CreateBeat(ctx context.Context, arg CreateBeatParams) (Beat, e
 		arg.Bpm,
 		arg.Tags,
 		arg.S3Key,
-		arg.LikesCount,
 	)
 	var i Beat
 	err := row.Scan(
@@ -54,7 +51,6 @@ func (q *Queries) CreateBeat(ctx context.Context, arg CreateBeatParams) (Beat, e
 		&i.Bpm,
 		&i.Tags,
 		&i.S3Key,
-		&i.LikesCount,
 		&i.CreatedAt,
 	)
 	return i, err
@@ -71,7 +67,7 @@ func (q *Queries) DeleteBeat(ctx context.Context, id int32) error {
 }
 
 const getBeatById = `-- name: GetBeatById :one
-SELECT id, creator_id, title, genre, key, bpm, tags, s3_key, likes_count, created_at FROM beats
+SELECT id, creator_id, title, genre, key, bpm, tags, s3_key, created_at FROM beats
 WHERE id = $1
 LIMIT 1
 `
@@ -88,14 +84,13 @@ func (q *Queries) GetBeatById(ctx context.Context, id int32) (Beat, error) {
 		&i.Bpm,
 		&i.Tags,
 		&i.S3Key,
-		&i.LikesCount,
 		&i.CreatedAt,
 	)
 	return i, err
 }
 
 const listBeatsByBpmRange = `-- name: ListBeatsByBpmRange :many
-SELECT id, creator_id, title, genre, key, bpm, tags, s3_key, likes_count, created_at FROM beats
+SELECT id, creator_id, title, genre, key, bpm, tags, s3_key, created_at FROM beats
 WHERE bpm BETWEEN $1 AND $2
 ORDER BY id
 LIMIT $3
@@ -132,7 +127,6 @@ func (q *Queries) ListBeatsByBpmRange(ctx context.Context, arg ListBeatsByBpmRan
 			&i.Bpm,
 			&i.Tags,
 			&i.S3Key,
-			&i.LikesCount,
 			&i.CreatedAt,
 		); err != nil {
 			return nil, err
@@ -149,7 +143,7 @@ func (q *Queries) ListBeatsByBpmRange(ctx context.Context, arg ListBeatsByBpmRan
 }
 
 const listBeatsByCreatorId = `-- name: ListBeatsByCreatorId :many
-SELECT id, creator_id, title, genre, key, bpm, tags, s3_key, likes_count, created_at FROM beats
+SELECT id, creator_id, title, genre, key, bpm, tags, s3_key, created_at FROM beats
 WHERE creator_id = $1
 ORDER BY id
 LIMIT $2
@@ -180,7 +174,6 @@ func (q *Queries) ListBeatsByCreatorId(ctx context.Context, arg ListBeatsByCreat
 			&i.Bpm,
 			&i.Tags,
 			&i.S3Key,
-			&i.LikesCount,
 			&i.CreatedAt,
 		); err != nil {
 			return nil, err
@@ -197,7 +190,7 @@ func (q *Queries) ListBeatsByCreatorId(ctx context.Context, arg ListBeatsByCreat
 }
 
 const listBeatsByCreatorIdAndBpmRange = `-- name: ListBeatsByCreatorIdAndBpmRange :many
-SELECT id, creator_id, title, genre, key, bpm, tags, s3_key, likes_count, created_at FROM beats
+SELECT id, creator_id, title, genre, key, bpm, tags, s3_key, created_at FROM beats
 WHERE creator_id = $1 AND bpm BETWEEN $2 AND $3
 ORDER BY id
 LIMIT $4
@@ -236,7 +229,6 @@ func (q *Queries) ListBeatsByCreatorIdAndBpmRange(ctx context.Context, arg ListB
 			&i.Bpm,
 			&i.Tags,
 			&i.S3Key,
-			&i.LikesCount,
 			&i.CreatedAt,
 		); err != nil {
 			return nil, err
@@ -253,7 +245,7 @@ func (q *Queries) ListBeatsByCreatorIdAndBpmRange(ctx context.Context, arg ListB
 }
 
 const listBeatsByCreatorIdAndGenre = `-- name: ListBeatsByCreatorIdAndGenre :many
-SELECT id, creator_id, title, genre, key, bpm, tags, s3_key, likes_count, created_at FROM beats
+SELECT id, creator_id, title, genre, key, bpm, tags, s3_key, created_at FROM beats
 WHERE creator_id = $1 AND genre = $2
 ORDER BY id
 LIMIT $3
@@ -290,7 +282,6 @@ func (q *Queries) ListBeatsByCreatorIdAndGenre(ctx context.Context, arg ListBeat
 			&i.Bpm,
 			&i.Tags,
 			&i.S3Key,
-			&i.LikesCount,
 			&i.CreatedAt,
 		); err != nil {
 			return nil, err
@@ -307,7 +298,7 @@ func (q *Queries) ListBeatsByCreatorIdAndGenre(ctx context.Context, arg ListBeat
 }
 
 const listBeatsByCreatorIdAndKey = `-- name: ListBeatsByCreatorIdAndKey :many
-SELECT id, creator_id, title, genre, key, bpm, tags, s3_key, likes_count, created_at FROM beats
+SELECT id, creator_id, title, genre, key, bpm, tags, s3_key, created_at FROM beats
 WHERE creator_id = $1 AND key = $2
 ORDER BY id
 LIMIT $3
@@ -344,7 +335,6 @@ func (q *Queries) ListBeatsByCreatorIdAndKey(ctx context.Context, arg ListBeatsB
 			&i.Bpm,
 			&i.Tags,
 			&i.S3Key,
-			&i.LikesCount,
 			&i.CreatedAt,
 		); err != nil {
 			return nil, err
@@ -361,7 +351,7 @@ func (q *Queries) ListBeatsByCreatorIdAndKey(ctx context.Context, arg ListBeatsB
 }
 
 const listBeatsByGenre = `-- name: ListBeatsByGenre :many
-SELECT id, creator_id, title, genre, key, bpm, tags, s3_key, likes_count, created_at FROM beats
+SELECT id, creator_id, title, genre, key, bpm, tags, s3_key, created_at FROM beats
 WHERE genre = $1
 ORDER BY id
 LIMIT $2
@@ -392,7 +382,6 @@ func (q *Queries) ListBeatsByGenre(ctx context.Context, arg ListBeatsByGenrePara
 			&i.Bpm,
 			&i.Tags,
 			&i.S3Key,
-			&i.LikesCount,
 			&i.CreatedAt,
 		); err != nil {
 			return nil, err
@@ -409,7 +398,7 @@ func (q *Queries) ListBeatsByGenre(ctx context.Context, arg ListBeatsByGenrePara
 }
 
 const listBeatsById = `-- name: ListBeatsById :many
-SELECT id, creator_id, title, genre, key, bpm, tags, s3_key, likes_count, created_at FROM beats
+SELECT id, creator_id, title, genre, key, bpm, tags, s3_key, created_at FROM beats
 ORDER BY id
 LIMIT $1
 OFFSET $2
@@ -438,7 +427,6 @@ func (q *Queries) ListBeatsById(ctx context.Context, arg ListBeatsByIdParams) ([
 			&i.Bpm,
 			&i.Tags,
 			&i.S3Key,
-			&i.LikesCount,
 			&i.CreatedAt,
 		); err != nil {
 			return nil, err
@@ -455,7 +443,7 @@ func (q *Queries) ListBeatsById(ctx context.Context, arg ListBeatsByIdParams) ([
 }
 
 const listBeatsByKey = `-- name: ListBeatsByKey :many
-SELECT id, creator_id, title, genre, key, bpm, tags, s3_key, likes_count, created_at FROM beats
+SELECT id, creator_id, title, genre, key, bpm, tags, s3_key, created_at FROM beats
 WHERE key = $1
 ORDER BY id
 LIMIT $2
@@ -486,7 +474,6 @@ func (q *Queries) ListBeatsByKey(ctx context.Context, arg ListBeatsByKeyParams) 
 			&i.Bpm,
 			&i.Tags,
 			&i.S3Key,
-			&i.LikesCount,
 			&i.CreatedAt,
 		); err != nil {
 			return nil, err
@@ -509,21 +496,19 @@ SET title = $2,
     key = $4,
     bpm = $5,
     tags = $6,
-    s3_key = $7,
-    likes_count = $8
+    s3_key = $7
 WHERE id = $1
-RETURNING id, creator_id, title, genre, key, bpm, tags, s3_key, likes_count, created_at
+RETURNING id, creator_id, title, genre, key, bpm, tags, s3_key, created_at
 `
 
 type UpdateBeatParams struct {
-	ID         int32  `json:"id"`
-	Title      string `json:"title"`
-	Genre      string `json:"genre"`
-	Key        string `json:"key"`
-	Bpm        int16  `json:"bpm"`
-	Tags       string `json:"tags"`
-	S3Key      string `json:"s3_key"`
-	LikesCount int64  `json:"likes_count"`
+	ID    int32  `json:"id"`
+	Title string `json:"title"`
+	Genre string `json:"genre"`
+	Key   string `json:"key"`
+	Bpm   int16  `json:"bpm"`
+	Tags  string `json:"tags"`
+	S3Key string `json:"s3_key"`
 }
 
 func (q *Queries) UpdateBeat(ctx context.Context, arg UpdateBeatParams) (Beat, error) {
@@ -535,7 +520,6 @@ func (q *Queries) UpdateBeat(ctx context.Context, arg UpdateBeatParams) (Beat, e
 		arg.Bpm,
 		arg.Tags,
 		arg.S3Key,
-		arg.LikesCount,
 	)
 	var i Beat
 	err := row.Scan(
@@ -547,37 +531,6 @@ func (q *Queries) UpdateBeat(ctx context.Context, arg UpdateBeatParams) (Beat, e
 		&i.Bpm,
 		&i.Tags,
 		&i.S3Key,
-		&i.LikesCount,
-		&i.CreatedAt,
-	)
-	return i, err
-}
-
-const updateBeatLikesCount = `-- name: UpdateBeatLikesCount :one
-UPDATE beats
-SET likes_count = $2
-WHERE id = $1
-RETURNING id, creator_id, title, genre, key, bpm, tags, s3_key, likes_count, created_at
-`
-
-type UpdateBeatLikesCountParams struct {
-	ID         int32 `json:"id"`
-	LikesCount int64 `json:"likes_count"`
-}
-
-func (q *Queries) UpdateBeatLikesCount(ctx context.Context, arg UpdateBeatLikesCountParams) (Beat, error) {
-	row := q.db.QueryRowContext(ctx, updateBeatLikesCount, arg.ID, arg.LikesCount)
-	var i Beat
-	err := row.Scan(
-		&i.ID,
-		&i.CreatorID,
-		&i.Title,
-		&i.Genre,
-		&i.Key,
-		&i.Bpm,
-		&i.Tags,
-		&i.S3Key,
-		&i.LikesCount,
 		&i.CreatedAt,
 	)
 	return i, err
