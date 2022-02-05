@@ -1,4 +1,4 @@
-module github.com/danglebary/beatstore-backend
+module github.com/danglebary/beatstore-backend-go
 
 go 1.17
 
