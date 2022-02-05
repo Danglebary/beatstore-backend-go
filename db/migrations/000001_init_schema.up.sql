@@ -50,6 +50,14 @@ CREATE INDEX ON "beats" ("bpm");
 
 CREATE INDEX ON "beats" ("tags");
 
+CREATE INDEX ON "beats" ("creator_id", "key");
+
+CREATE INDEX ON "beats" ("creator_id", "genre");
+
+CREATE INDEX ON "beats" ("creator_id", "bpm");
+
+CREATE INDEX ON "beats" ("creator_id", "tags");
+
 CREATE INDEX ON "likes" ("user_id");
 
 CREATE INDEX ON "likes" ("beat_id");
