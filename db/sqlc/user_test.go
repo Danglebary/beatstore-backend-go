@@ -77,13 +77,13 @@ func TestListUsersById(t *testing.T) {
 		CreateRandomUser(t)
 	}
 	arg := ListUsersByIdParams{
-		Limit:  5,
-		Offset: 5,
+		Limit:  int32(n),
+		Offset: 0,
 	}
 	users, err := testQueries.ListUsersById(context.Background(), arg)
 	require.NoError(t, err)
 	require.NotEmpty(t, users)
-	require.Equal(t, 5, len(users))
+	require.Equal(t, n, len(users))
 
 	for _, user := range users {
 		require.NotEmpty(t, user)
@@ -97,13 +97,13 @@ func TestListUsersByUsername(t *testing.T) {
 		CreateRandomUser(t)
 	}
 	arg := ListUsersByUsernameParams{
-		Limit:  5,
-		Offset: 5,
+		Limit:  int32(n),
+		Offset: 0,
 	}
 	users, err := testQueries.ListUsersByUsername(context.Background(), arg)
 	require.NoError(t, err)
 	require.NotEmpty(t, users)
-	require.Equal(t, 5, len(users))
+	require.Equal(t, n, len(users))
 
 	for _, user := range users {
 		require.NotEmpty(t, user)
