@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/danglebary/beatstore-backend/util"
+	"github.com/danglebary/beatstore-backend-go/util"
 	"github.com/stretchr/testify/require"
 )
 
