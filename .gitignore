@@ -1,0 +1,9 @@
+# misc
+.DS_Store
+*.pem
+
+# env files
+.env
+
+# log files
+*.log
