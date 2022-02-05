@@ -84,6 +84,12 @@ SET title = $2,
 WHERE id = $1
 RETURNING *;
 
+-- name: UpdateBeatLikesCount :one
+UPDATE beats
+SET likes_count = $8
+WHERE id = $1
+RETURNING *;
+
 -- name: DeleteBeat :exec
 DELETE FROM beats
 WHERE id = $1;
