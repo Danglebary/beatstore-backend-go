@@ -17,8 +17,8 @@ INSERT INTO likes (
 `
 
 type CreateLikeParams struct {
-	UserID int64 `json:"user_id"`
-	BeatID int64 `json:"beat_id"`
+	UserID int32 `json:"user_id"`
+	BeatID int32 `json:"beat_id"`
 }
 
 func (q *Queries) CreateLike(ctx context.Context, arg CreateLikeParams) error {
@@ -32,8 +32,8 @@ WHERE user_id = $1 AND beat_id = $2
 `
 
 type DeleteLikeParams struct {
-	UserID int64 `json:"user_id"`
-	BeatID int64 `json:"beat_id"`
+	UserID int32 `json:"user_id"`
+	BeatID int32 `json:"beat_id"`
 }
 
 func (q *Queries) DeleteLike(ctx context.Context, arg DeleteLikeParams) error {
@@ -48,8 +48,8 @@ LIMIT 1
 `
 
 type GetLikeByUserAndBeatParams struct {
-	UserID int64 `json:"user_id"`
-	BeatID int64 `json:"beat_id"`
+	UserID int32 `json:"user_id"`
+	BeatID int32 `json:"beat_id"`
 }
 
 func (q *Queries) GetLikeByUserAndBeat(ctx context.Context, arg GetLikeByUserAndBeatParams) (Like, error) {
@@ -67,7 +67,7 @@ OFFSET $3
 `
 
 type ListLikesByBeatParams struct {
-	BeatID int64 `json:"beat_id"`
+	BeatID int32 `json:"beat_id"`
 	Limit  int32 `json:"limit"`
 	Offset int32 `json:"offset"`
 }
@@ -103,7 +103,7 @@ OFFSET $3
 `
 
 type ListLikesByUserParams struct {
-	UserID int64 `json:"user_id"`
+	UserID int32 `json:"user_id"`
 	Limit  int32 `json:"limit"`
 	Offset int32 `json:"offset"`
 }

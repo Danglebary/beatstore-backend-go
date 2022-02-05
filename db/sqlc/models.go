@@ -21,8 +21,8 @@ type Beat struct {
 
 type Like struct {
 	ID     int32 `json:"id"`
-	UserID int64 `json:"user_id"`
-	BeatID int64 `json:"beat_id"`
+	UserID int32 `json:"user_id"`
+	BeatID int32 `json:"beat_id"`
 }
 
 type User struct {
