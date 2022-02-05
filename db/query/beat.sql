@@ -86,7 +86,7 @@ RETURNING *;
 
 -- name: UpdateBeatLikesCount :one
 UPDATE beats
-SET likes_count = $8
+SET likes_count = $2
 WHERE id = $1
 RETURNING *;
 
