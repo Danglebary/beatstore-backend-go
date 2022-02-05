@@ -1,4 +1,4 @@
--- name: CreateLike :exec
+-- name: CreateLike :one
 INSERT INTO likes (
     user_id,
     beat_id
