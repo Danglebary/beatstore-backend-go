@@ -17,6 +17,7 @@ func NewServer(store *db.Store) *Server {
 	router := gin.Default()
 
 	router.POST("/users", server.createUser)
+	router.DELETE("/users", server.deleteUser)
 
 	server.router = router
 	return server
