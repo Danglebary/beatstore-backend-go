@@ -8,7 +8,7 @@ import (
 
 const alphabet = "abcdefghijklmnopqrstuvwxyz"
 
-var musicalKeys [22]string = [22]string{
+var MusicalKeys [22]string = [22]string{
 	"C major",
 	"C minor",
 	"C# major",
@@ -75,28 +75,38 @@ func RandomTitle() string {
 	return RandomString(6)
 }
 
+// Generates a random string of length 6
 func RandomGenre() string {
 	return RandomString(6)
 }
 
+// Generates a random musicalKey
 func RandomKey() string {
-	k := len(musicalKeys)
-	return musicalKeys[rand.Intn(k)]
+	k := len(MusicalKeys)
+	return MusicalKeys[rand.Intn(k)]
 }
 
+// Generates a random integer between 20 and 999
 func RandomBpm() int16 {
 	return int16(RandomInt(20, 999))
 }
 
+// Generates a random comma-seperated string of 1-5 words, each word containing 3-8 chars
 func RandomTags() string {
 	str := ""
 
-	for i := 0; i < int(RandomInt(0, 5)); i++ {
+	for i := 0; i < int(RandomInt(1, 5)); i++ {
 		str += RandomString(int(RandomInt(3, 8))) + ","
 	}
 	return str
 }
 
+// Generates a random string of length 12
 func RandomS3Key() string {
 	return RandomString(12)
+}
+
+// Generates a random integer between 0 and 1000
+func RandomLikesCount() int64 {
+	return RandomInt(0, 1000)
 }
