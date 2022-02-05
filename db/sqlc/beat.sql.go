@@ -552,3 +552,33 @@ func (q *Queries) UpdateBeat(ctx context.Context, arg UpdateBeatParams) (Beat, e
 	)
 	return i, err
 }
+
+const updateBeatLikesCount = `-- name: UpdateBeatLikesCount :one
+UPDATE beats
+SET likes_count = $2
+WHERE id = $1
+RETURNING id, creator_id, title, genre, key, bpm, tags, s3_key, likes_count, created_at
+`
+
+type UpdateBeatLikesCountParams struct {
+	ID         int32 `json:"id"`
+	LikesCount int64 `json:"likes_count"`
+}
+
+func (q *Queries) UpdateBeatLikesCount(ctx context.Context, arg UpdateBeatLikesCountParams) (Beat, error) {
+	row := q.db.QueryRowContext(ctx, updateBeatLikesCount, arg.ID, arg.LikesCount)
+	var i Beat
+	err := row.Scan(
+		&i.ID,
+		&i.CreatorID,
+		&i.Title,
+		&i.Genre,
+		&i.Key,
+		&i.Bpm,
+		&i.Tags,
+		&i.S3Key,
+		&i.LikesCount,
+		&i.CreatedAt,
+	)
+	return i, err
+}
