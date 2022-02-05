@@ -31,14 +31,14 @@ func CreateRandomUser(t *testing.T) User {
 	return user
 }
 
-func deleteRandomUser(t *testing.T, id int32) {
+func DeleteRandomUser(t *testing.T, id int32) {
 	err := testQueries.DeleteUser(context.Background(), id)
 	require.NoError(t, err)
 }
 
 func TestCreateUser(t *testing.T) {
 	user := CreateRandomUser(t)
-	deleteRandomUser(t, user.ID)
+	DeleteRandomUser(t, user.ID)
 }
 
 func TestGetUserById(t *testing.T) {
@@ -53,7 +53,7 @@ func TestGetUserById(t *testing.T) {
 	require.Equal(t, user1.Email, user2.Email)
 	require.WithinDuration(t, user1.CreatedAt, user2.CreatedAt, time.Second)
 
-	deleteRandomUser(t, user1.ID)
+	DeleteRandomUser(t, user1.ID)
 }
 
 func TestGetUserByUsername(t *testing.T) {
@@ -68,7 +68,7 @@ func TestGetUserByUsername(t *testing.T) {
 	require.Equal(t, user1.Email, user2.Email)
 	require.WithinDuration(t, user1.CreatedAt, user2.CreatedAt, time.Second)
 
-	deleteRandomUser(t, user1.ID)
+	DeleteRandomUser(t, user1.ID)
 }
 
 func TestListUsersById(t *testing.T) {
@@ -87,7 +87,7 @@ func TestListUsersById(t *testing.T) {
 
 	for _, user := range users {
 		require.NotEmpty(t, user)
-		deleteRandomUser(t, user.ID)
+		DeleteRandomUser(t, user.ID)
 	}
 }
 
@@ -107,7 +107,7 @@ func TestListUsersByUsername(t *testing.T) {
 
 	for _, user := range users {
 		require.NotEmpty(t, user)
-		deleteRandomUser(t, user.ID)
+		DeleteRandomUser(t, user.ID)
 	}
 }
 
@@ -129,7 +129,7 @@ func TestUpdateUser(t *testing.T) {
 	require.Equal(t, arg.Email, user2.Email)
 	require.WithinDuration(t, user1.CreatedAt, user2.CreatedAt, time.Second)
 
-	deleteRandomUser(t, user1.ID)
+	DeleteRandomUser(t, user1.ID)
 }
 
 func TestDeleteUser(t *testing.T) {
