@@ -21,8 +21,8 @@ CREATE TABLE "beats" (
 
 CREATE TABLE "likes" (
     "id" SERIAL PRIMARY KEY,
-    "user_id" bigint NOT NULL,
-    "beat_id" bigint NOT NULL
+    "user_id" integer NOT NULL,
+    "beat_id" integer NOT NULL
 );
 
 ALTER TABLE
