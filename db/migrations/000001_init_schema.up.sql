@@ -12,7 +12,7 @@ CREATE TABLE "beats" (
     "title" VARCHAR NOT NULL,
     "genre" VARCHAR NOT NULL,
     "key" VARCHAR NOT NULL,
-    "bpm" bigint NOT NULL,
+    "bpm" smallint NOT NULL,
     "tags" VARCHAR NOT NULL,
     "s3_key" VARCHAR NOT NULL,
     "likes_count" bigint NOT NULL DEFAULT 0,
