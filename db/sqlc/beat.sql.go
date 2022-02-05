@@ -23,11 +23,11 @@ INSERT INTO beats (
 `
 
 type CreateBeatParams struct {
-	CreatorID  int64  `json:"creator_id"`
+	CreatorID  int32  `json:"creator_id"`
 	Title      string `json:"title"`
 	Genre      string `json:"genre"`
 	Key        string `json:"key"`
-	Bpm        int64  `json:"bpm"`
+	Bpm        int16  `json:"bpm"`
 	Tags       string `json:"tags"`
 	S3Key      string `json:"s3_key"`
 	LikesCount int64  `json:"likes_count"`
@@ -103,8 +103,8 @@ OFFSET $4
 `
 
 type ListBeatsByBpmRangeParams struct {
-	Bpm    int64 `json:"bpm"`
-	Bpm_2  int64 `json:"bpm_2"`
+	Bpm    int16 `json:"bpm"`
+	Bpm_2  int16 `json:"bpm_2"`
 	Limit  int32 `json:"limit"`
 	Offset int32 `json:"offset"`
 }
@@ -157,7 +157,7 @@ OFFSET $3
 `
 
 type ListBeatsByCreatorIdParams struct {
-	CreatorID int64 `json:"creator_id"`
+	CreatorID int32 `json:"creator_id"`
 	Limit     int32 `json:"limit"`
 	Offset    int32 `json:"offset"`
 }
@@ -205,9 +205,9 @@ OFFSET $5
 `
 
 type ListBeatsByCreatorIdAndBpmRangeParams struct {
-	CreatorID int64 `json:"creator_id"`
-	Bpm       int64 `json:"bpm"`
-	Bpm_2     int64 `json:"bpm_2"`
+	CreatorID int32 `json:"creator_id"`
+	Bpm       int16 `json:"bpm"`
+	Bpm_2     int16 `json:"bpm_2"`
 	Limit     int32 `json:"limit"`
 	Offset    int32 `json:"offset"`
 }
@@ -261,7 +261,7 @@ OFFSET $4
 `
 
 type ListBeatsByCreatorIdAndGenreParams struct {
-	CreatorID int64  `json:"creator_id"`
+	CreatorID int32  `json:"creator_id"`
 	Genre     string `json:"genre"`
 	Limit     int32  `json:"limit"`
 	Offset    int32  `json:"offset"`
@@ -315,7 +315,7 @@ OFFSET $4
 `
 
 type ListBeatsByCreatorIdAndKeyParams struct {
-	CreatorID int64  `json:"creator_id"`
+	CreatorID int32  `json:"creator_id"`
 	Key       string `json:"key"`
 	Limit     int32  `json:"limit"`
 	Offset    int32  `json:"offset"`
@@ -520,7 +520,7 @@ type UpdateBeatParams struct {
 	Title      string `json:"title"`
 	Genre      string `json:"genre"`
 	Key        string `json:"key"`
-	Bpm        int64  `json:"bpm"`
+	Bpm        int16  `json:"bpm"`
 	Tags       string `json:"tags"`
 	S3Key      string `json:"s3_key"`
 	LikesCount int64  `json:"likes_count"`

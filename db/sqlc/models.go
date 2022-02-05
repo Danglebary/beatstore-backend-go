@@ -8,11 +8,11 @@ import (
 
 type Beat struct {
 	ID         int32     `json:"id"`
-	CreatorID  int64     `json:"creator_id"`
+	CreatorID  int32     `json:"creator_id"`
 	Title      string    `json:"title"`
 	Genre      string    `json:"genre"`
 	Key        string    `json:"key"`
-	Bpm        int64     `json:"bpm"`
+	Bpm        int16     `json:"bpm"`
 	Tags       string    `json:"tags"`
 	S3Key      string    `json:"s3_key"`
 	LikesCount int64     `json:"likes_count"`
