@@ -30,7 +30,7 @@ func RandomString(n int) string {
 	return sb.String()
 }
 
-func RandomUserName() string {
+func RandomUsername() string {
 	return RandomString(6)
 }
 

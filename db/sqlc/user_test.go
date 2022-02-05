@@ -10,7 +10,7 @@ import (
 
 func TestCreateUser(t *testing.T) {
 	arg := CreateUserParams{
-		Username: util.RandomUserName(),
+		Username: util.RandomUsername(),
 		Password: util.RandomPassword(),
 		Email:    util.RandomEmail(),
 	}
