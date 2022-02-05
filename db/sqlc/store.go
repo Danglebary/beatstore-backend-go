@@ -36,16 +36,3 @@ func (store *Store) execTx(ctx context.Context, fn func(*Queries) error) error {
 
 	return tx.Commit()
 }
-
-// contains input parameters for LikeBeatTx function
-type LikeBeatTxParams struct {
-	UserId int32 `json:"user_id"`
-	BeatId int32 `json:"beat_id"`
-}
-
-// contains result of LikeBeatTx function
-type LikeBeatTxResult struct {
-	LikeEntry Like `json:"like_entry"`
-	LikeUser  User `json:"like_user"`
-	LikeBeat  Beat `json:"like_beat"`
-}
