@@ -36,3 +36,40 @@ func TestRandomEmail(t *testing.T) {
 	require.Contains(t, res, "@")
 	require.Contains(t, res, ".com")
 }
+
+func TestRandomTitle(t *testing.T) {
+	res := RandomTitle()
+	require.Equal(t, 6, len(res))
+}
+
+func TestRandomGenre(t *testing.T) {
+	res := RandomGenre()
+	require.Equal(t, 6, len(res))
+}
+
+func TestRandomKey(t *testing.T) {
+	res := RandomKey()
+	require.Contains(t, MusicalKeys, res)
+}
+
+func TestRandomBpm(t *testing.T) {
+	res := RandomBpm()
+	require.GreaterOrEqual(t, res, int16(20))
+	require.LessOrEqual(t, res, int16(999))
+}
+
+func TestRandomTags(t *testing.T) {
+	res := RandomTags()
+	require.Contains(t, res, ",")
+}
+
+func TestRandomS3Key(t *testing.T) {
+	res := RandomS3Key()
+	require.Equal(t, 12, len(res))
+}
+
+func TestRandomLikesCount(t *testing.T) {
+	res := RandomLikesCount()
+	require.GreaterOrEqual(t, res, int64(0))
+	require.LessOrEqual(t, res, int64(1000))
+}
