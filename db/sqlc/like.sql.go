@@ -7,7 +7,7 @@ import (
 	"context"
 )
 
-const createLike = `-- name: CreateLike :exec
+const createLike = `-- name: CreateLike :one
 INSERT INTO likes (
     user_id,
     beat_id
@@ -21,9 +21,11 @@ type CreateLikeParams struct {
 	BeatID int32 `json:"beat_id"`
 }
 
-func (q *Queries) CreateLike(ctx context.Context, arg CreateLikeParams) error {
-	_, err := q.db.ExecContext(ctx, createLike, arg.UserID, arg.BeatID)
-	return err
+func (q *Queries) CreateLike(ctx context.Context, arg CreateLikeParams) (Like, error) {
+	row := q.db.QueryRowContext(ctx, createLike, arg.UserID, arg.BeatID)
+	var i Like
+	err := row.Scan(&i.ID, &i.UserID, &i.BeatID)
+	return i, err
 }
 
 const deleteLike = `-- name: DeleteLike :exec
