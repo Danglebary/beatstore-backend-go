@@ -8,7 +8,7 @@ CREATE TABLE "users" (
 
 CREATE TABLE "beats" (
     "id" SERIAL PRIMARY KEY,
-    "creator" bigint NOT NULL,
+    "creator_id" bigint NOT NULL,
     "title" VARCHAR NOT NULL,
     "genre" VARCHAR NOT NULL,
     "key" VARCHAR NOT NULL,
