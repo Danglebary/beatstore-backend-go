@@ -8,7 +8,7 @@ import (
 
 type Beat struct {
 	ID         int32     `json:"id"`
-	Creator    int64     `json:"creator"`
+	CreatorID  int64     `json:"creator_id"`
 	Title      string    `json:"title"`
 	Genre      string    `json:"genre"`
 	Key        string    `json:"key"`
