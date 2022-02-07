@@ -29,3 +29,16 @@ input UpdateUserInput {
 input DeleteUserInput {
     id: ID!
 }
+
+input GetUserByIdInput {
+    id: ID!
+}
+
+input GetUserByUsernameInput {
+    username: String!
+}
+
+input ListUsersInput {
+    limit: Int!
+    offset: Int!
+}

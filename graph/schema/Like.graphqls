@@ -3,3 +3,20 @@ type Like {
     userId: ID!
     beatId: ID!
 }
+
+input GetLikeByUserAndBeatIdInput {
+    userId: ID!
+    beatId: ID!
+}
+
+input ListLikesByUserIdInput {
+    userId: ID!
+    limit: Int!
+    offset: Int!
+}
+
+input ListLikesByBeatIdInput {
+    beatId: ID!
+    limit: Int!
+    offset: Int!
+}

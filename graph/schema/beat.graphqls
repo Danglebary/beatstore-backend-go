@@ -35,3 +35,18 @@ input UpdateBeatInput {
 input DeleteBeatInput {
     id: ID!
 }
+
+input GetBeatByIdInput {
+    id: ID!
+}
+
+input ListBeatsByIdInput {
+    limit: Int!
+    offset: Int!
+}
+
+input ListBeatsByCreatorIdInput {
+    creatorId: ID!
+    limit: Int!
+    offset: Int!
+}
