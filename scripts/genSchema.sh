@@ -1,0 +1,1 @@
+for f in ./graph/schema/*.graphqls; do cat $f; echo; done > ./graph/schema.graphqls

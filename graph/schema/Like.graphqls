@@ -1,0 +1,5 @@
+type Like {
+    id: ID!
+    userId: ID!
+    beatId: ID!
+}

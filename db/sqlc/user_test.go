@@ -76,31 +76,11 @@ func TestListUsersById(t *testing.T) {
 	for i := 0; i < n; i++ {
 		createRandomUser(t)
 	}
-	arg := ListUsersByIdParams{
+	arg := ListUsersParams{
 		Limit:  int32(n),
 		Offset: 0,
 	}
-	users, err := testQueries.ListUsersById(context.Background(), arg)
-	require.NoError(t, err)
-	require.NotEmpty(t, users)
-	require.Equal(t, n, len(users))
-
-	for _, user := range users {
-		require.NotEmpty(t, user)
-		deleteRandomUser(t, user.ID)
-	}
-}
-
-func TestListUsersByUsername(t *testing.T) {
-	n := 10
-	for i := 0; i < n; i++ {
-		createRandomUser(t)
-	}
-	arg := ListUsersByUsernameParams{
-		Limit:  int32(n),
-		Offset: 0,
-	}
-	users, err := testQueries.ListUsersByUsername(context.Background(), arg)
+	users, err := testQueries.ListUsers(context.Background(), arg)
 	require.NoError(t, err)
 	require.NotEmpty(t, users)
 	require.Equal(t, n, len(users))

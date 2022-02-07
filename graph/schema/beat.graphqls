@@ -1,0 +1,37 @@
+type Beat {
+    id: ID!
+    creatorId: ID!
+    title: String!
+    genre: String!
+    key: String!
+    bpm: Int!
+    tags: [String!]!
+    s3Key: String!
+    createdAt: Time!
+}
+
+type DeleteBeatResponse {
+    message: String!
+}
+
+input CreateBeatInput {
+    creatorId: ID!
+    title: String!
+    genre: String!
+    key: String!
+    bpm: Int!
+    tags: [String!]!
+}
+
+input UpdateBeatInput {
+    id: ID!
+    title: String!
+    genre: String!
+    key: String!
+    bpm: Int!
+    tags: [String!]!
+}
+
+input DeleteBeatInput {
+    id: ID!
+}

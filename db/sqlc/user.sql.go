@@ -84,61 +84,20 @@ func (q *Queries) GetUserByUsername(ctx context.Context, username string) (User,
 	return i, err
 }
 
-const listUsersById = `-- name: ListUsersById :many
+const listUsers = `-- name: ListUsers :many
 SELECT id, username, password, email, created_at FROM users
 ORDER BY id
 LIMIT $1
 OFFSET $2
 `
 
-type ListUsersByIdParams struct {
+type ListUsersParams struct {
 	Limit  int32 `json:"limit"`
 	Offset int32 `json:"offset"`
 }
 
-func (q *Queries) ListUsersById(ctx context.Context, arg ListUsersByIdParams) ([]User, error) {
-	rows, err := q.db.QueryContext(ctx, listUsersById, arg.Limit, arg.Offset)
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-	var items []User
-	for rows.Next() {
-		var i User
-		if err := rows.Scan(
-			&i.ID,
-			&i.Username,
-			&i.Password,
-			&i.Email,
-			&i.CreatedAt,
-		); err != nil {
-			return nil, err
-		}
-		items = append(items, i)
-	}
-	if err := rows.Close(); err != nil {
-		return nil, err
-	}
-	if err := rows.Err(); err != nil {
-		return nil, err
-	}
-	return items, nil
-}
-
-const listUsersByUsername = `-- name: ListUsersByUsername :many
-SELECT id, username, password, email, created_at FROM users
-ORDER BY username
-LIMIT $1
-OFFSET $2
-`
-
-type ListUsersByUsernameParams struct {
-	Limit  int32 `json:"limit"`
-	Offset int32 `json:"offset"`
-}
-
-func (q *Queries) ListUsersByUsername(ctx context.Context, arg ListUsersByUsernameParams) ([]User, error) {
-	rows, err := q.db.QueryContext(ctx, listUsersByUsername, arg.Limit, arg.Offset)
+func (q *Queries) ListUsers(ctx context.Context, arg ListUsersParams) ([]User, error) {
+	rows, err := q.db.QueryContext(ctx, listUsers, arg.Limit, arg.Offset)
 	if err != nil {
 		return nil, err
 	}

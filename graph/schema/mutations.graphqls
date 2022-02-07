@@ -1,0 +1,12 @@
+type Mutation {
+    # USER MUTATIONS
+    createUser(input: CreateUserInput!): User!
+    updateUser(input: UpdateUserInput!): User!
+    deleteUser(input: DeleteUserInput!): DeleteUserResponse!
+
+
+    # BEAT MUTATIONS
+    createBeat(input: CreateBeatInput!): Beat!
+    updateBeat(input: UpdateBeatInput!): Beat!
+    deleteBeat(input: DeleteBeatInput!): DeleteBeatResponse!
+}

@@ -10,10 +10,13 @@ migratedown:
 	migrate -path db/migrations -database "postgresql://root:secret@localhost:5432/beatstore?sslmode=disable" -verbose down
 sqlc:
 	sqlc generate
+genschema:
+	sh ./scripts/genSchema.sh
+gqlgen:
+	go run github.com/99designs/gqlgen generate ./...
 test:
 	go test -v -cover ./...
-
 server:
 	go run main.go
 
-.PHONY: postgres createdb dropdb migrateup migratedown sqlc test server
+.PHONY: postgres createdb dropdb migrateup migratedown sqlc test server gqlgen

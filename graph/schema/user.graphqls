@@ -1,0 +1,31 @@
+scalar Time
+
+type User {
+    id: ID!
+    username: String!
+    password: String!
+    email: String!
+    beats: [Beat]!
+    createdAt:  Time!
+}
+
+type DeleteUserResponse {
+    message: String!
+}
+
+input CreateUserInput {
+    username: String!
+    password: String!
+    email: String!
+}
+
+input UpdateUserInput {
+    id: ID!
+    username: String!
+    password: String!
+    email: String!
+}
+
+input DeleteUserInput {
+    id: ID!
+}
