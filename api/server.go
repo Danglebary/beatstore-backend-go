@@ -16,9 +16,6 @@ func NewServer(store *db.Store) *Server {
 	server := &Server{store: store}
 	router := gin.Default()
 
-	router.GET("/", playgroundHandler())
-	router.POST("/", graphqlHandler())
-
 	server.router = router
 	return server
 }
