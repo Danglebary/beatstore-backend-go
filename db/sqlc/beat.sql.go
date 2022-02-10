@@ -115,7 +115,7 @@ func (q *Queries) ListBeatsByBpmRange(ctx context.Context, arg ListBeatsByBpmRan
 		return nil, err
 	}
 	defer rows.Close()
-	var items []Beat
+	items := []Beat{}
 	for rows.Next() {
 		var i Beat
 		if err := rows.Scan(
@@ -162,7 +162,7 @@ func (q *Queries) ListBeatsByCreatorId(ctx context.Context, arg ListBeatsByCreat
 		return nil, err
 	}
 	defer rows.Close()
-	var items []Beat
+	items := []Beat{}
 	for rows.Next() {
 		var i Beat
 		if err := rows.Scan(
@@ -217,7 +217,7 @@ func (q *Queries) ListBeatsByCreatorIdAndBpmRange(ctx context.Context, arg ListB
 		return nil, err
 	}
 	defer rows.Close()
-	var items []Beat
+	items := []Beat{}
 	for rows.Next() {
 		var i Beat
 		if err := rows.Scan(
@@ -270,7 +270,7 @@ func (q *Queries) ListBeatsByCreatorIdAndGenre(ctx context.Context, arg ListBeat
 		return nil, err
 	}
 	defer rows.Close()
-	var items []Beat
+	items := []Beat{}
 	for rows.Next() {
 		var i Beat
 		if err := rows.Scan(
@@ -323,7 +323,7 @@ func (q *Queries) ListBeatsByCreatorIdAndKey(ctx context.Context, arg ListBeatsB
 		return nil, err
 	}
 	defer rows.Close()
-	var items []Beat
+	items := []Beat{}
 	for rows.Next() {
 		var i Beat
 		if err := rows.Scan(
@@ -370,7 +370,7 @@ func (q *Queries) ListBeatsByGenre(ctx context.Context, arg ListBeatsByGenrePara
 		return nil, err
 	}
 	defer rows.Close()
-	var items []Beat
+	items := []Beat{}
 	for rows.Next() {
 		var i Beat
 		if err := rows.Scan(
@@ -415,7 +415,7 @@ func (q *Queries) ListBeatsById(ctx context.Context, arg ListBeatsByIdParams) ([
 		return nil, err
 	}
 	defer rows.Close()
-	var items []Beat
+	items := []Beat{}
 	for rows.Next() {
 		var i Beat
 		if err := rows.Scan(
@@ -462,7 +462,7 @@ func (q *Queries) ListBeatsByKey(ctx context.Context, arg ListBeatsByKeyParams) 
 		return nil, err
 	}
 	defer rows.Close()
-	var items []Beat
+	items := []Beat{}
 	for rows.Next() {
 		var i Beat
 		if err := rows.Scan(

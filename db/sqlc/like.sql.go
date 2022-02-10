@@ -80,7 +80,7 @@ func (q *Queries) ListLikesByBeat(ctx context.Context, arg ListLikesByBeatParams
 		return nil, err
 	}
 	defer rows.Close()
-	var items []Like
+	items := []Like{}
 	for rows.Next() {
 		var i Like
 		if err := rows.Scan(&i.ID, &i.UserID, &i.BeatID); err != nil {
@@ -116,7 +116,7 @@ func (q *Queries) ListLikesByUser(ctx context.Context, arg ListLikesByUserParams
 		return nil, err
 	}
 	defer rows.Close()
-	var items []Like
+	items := []Like{}
 	for rows.Next() {
 		var i Like
 		if err := rows.Scan(&i.ID, &i.UserID, &i.BeatID); err != nil {
