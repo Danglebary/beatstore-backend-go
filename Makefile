@@ -10,9 +10,13 @@ migratedown:
 	migrate -path db/migrations -database "postgresql://root:secret@localhost:5432/beatstore?sslmode=disable" -verbose down
 sqlc:
 	sqlc generate
+mockgen:
+	mockgen -package mockdb -destination db/mock/store.go github.com/danglebary/beatstore-backend-go/db/sqlc Store
 test:
 	go test -v -cover ./...
 server:
 	go run main.go
+tidy:
+	go mod tidy
 
-.PHONY: postgres createdb dropdb migrateup migratedown sqlc test server
+.PHONY: postgres createdb dropdb migrateup migratedown sqlc mockgen test server tidy
