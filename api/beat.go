@@ -10,7 +10,7 @@ import (
 )
 
 type createBeatRequestUri struct {
-	ID int32 `json:"id" uri:"id" binding:"required, min=1"`
+	ID int32 `uri:"id" binding:"required, min=1"`
 }
 
 type createBeatRequestParams struct {
@@ -53,7 +53,7 @@ func (server *Server) createBeat(ctx *gin.Context) {
 }
 
 type updateBeatRequestUri struct {
-	ID int32 `json:"id" uri:"id" binding:"required, min=1"`
+	ID int32 `uri:"id" binding:"required, min=1"`
 }
 
 type updateBeatRequestParams struct {
@@ -97,7 +97,7 @@ func (server *Server) updateBeat(ctx *gin.Context) {
 }
 
 type getBeatByIdRequest struct {
-	ID int32 `json:"id" uri:"id" binding:"required, min=1"`
+	ID int32 `uri:"id" binding:"required, min=1"`
 }
 
 func (server *Server) getBeat(ctx *gin.Context) {
@@ -192,7 +192,7 @@ func (server *Server) listBeatsById(ctx *gin.Context) {
 }
 
 type listBeatsByCreatorIdRequestUri struct {
-	ID int32 `json:"id" uri:"id" binding:"required, min=1"`
+	ID int32 `uri:"id" binding:"required, min=1"`
 }
 
 type listBeatsByCreatorIdRequestParams struct {

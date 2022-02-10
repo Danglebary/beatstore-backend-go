@@ -36,7 +36,7 @@ func (server *Server) createUser(ctx *gin.Context) {
 }
 
 type updateUserRequestUri struct {
-	ID int32 `json:"id" uri:"id" binding:"required, min=1"`
+	ID int32 `uri:"id" binding:"required, min=1"`
 }
 
 type updateUserRequestParams struct {
@@ -72,7 +72,7 @@ func (server *Server) updateUser(ctx *gin.Context) {
 }
 
 type getUserByIdRequest struct {
-	ID int32 `json:"id" uri:"id" binding:"required, min=1"`
+	ID int32 `uri:"id" binding:"required, min=1"`
 }
 
 func (server *Server) getUserById(ctx *gin.Context) {
@@ -94,7 +94,7 @@ func (server *Server) getUserById(ctx *gin.Context) {
 }
 
 type getUserByUsernameRequest struct {
-	Username string `json:"username" uri:"username" binding:"required"`
+	Username string `uri:"username" binding:"required"`
 }
 
 func (server *Server) getUserByUsername(ctx *gin.Context) {
