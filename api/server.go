@@ -30,6 +30,12 @@ func NewServer(store *db.Store) *Server {
 	router.GET("/beats", server.listBeatsById)
 	router.GET("/users/:id/beats", server.listBeatsByCreatorId)
 
+	// Like routes
+	router.POST("/likes", server.createLike)
+	router.GET("/likes/:uid/:bid", server.getLike)
+	router.GET("/likes/:uid", server.listLikesByUserId)
+	router.GET("/likes/:bid", server.listLikesByBeatId)
+
 	server.router = router
 	return server
 }
