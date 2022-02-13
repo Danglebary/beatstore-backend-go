@@ -14,27 +14,7 @@ type Server struct {
 // Creates a new HTTP server instance and initializes routing
 func NewServer(store db.Store) *Server {
 	server := &Server{store: store}
-	router := gin.Default()
-
-	// User routes
-	router.POST("/users", server.createUser)
-	router.POST("/users/:id", server.updateUser)
-	router.GET("/users/:id", server.getUserById)
-	router.GET("/users/:username", server.getUserByUsername)
-	router.GET("/users", server.listUsers)
-
-	// Beat routes
-	router.POST("/users/:id/create-beat", server.createBeat)
-	router.POST("/beats/:id", server.updateBeat)
-	router.GET("/beats/:id", server.getBeat)
-	router.GET("/beats", server.listBeatsById)
-	router.GET("/users/:id/beats", server.listBeatsByCreatorId)
-
-	// Like routes
-	router.POST("/likes", server.createLike)
-	router.GET("/likes/:uid/:bid", server.getLike)
-	router.GET("/likes/:uid", server.listLikesByUserId)
-	router.GET("/likes/:bid", server.listLikesByBeatId)
+	router := newRouter(server)
 
 	server.router = router
 	return server

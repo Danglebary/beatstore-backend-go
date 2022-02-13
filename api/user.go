@@ -36,7 +36,7 @@ func (server *Server) createUser(ctx *gin.Context) {
 }
 
 type updateUserRequestUri struct {
-	ID int32 `uri:"id" binding:"required, min=1"`
+	ID int32 `uri:"id" binding:"required,min=1"`
 }
 
 type updateUserRequestParams struct {
@@ -72,38 +72,18 @@ func (server *Server) updateUser(ctx *gin.Context) {
 }
 
 type getUserByIdRequest struct {
-	ID int32 `uri:"id" binding:"required, min=1"`
+	ID int32 `uri:"id" binding:"required,min=1"`
 }
 
 func (server *Server) getUserById(ctx *gin.Context) {
-	var req getUserByIdRequest
-	if err := ctx.ShouldBindUri(&req); err != nil {
+	var uid getUserByIdRequest
+
+	if err := ctx.ShouldBindUri(&uid); err != nil {
 		ctx.JSON(http.StatusBadRequest, errorResponse(err))
 		return
 	}
-	user, err := server.store.GetUserById(ctx, req.ID)
-	if err != nil {
-		if err == sql.ErrNoRows {
-			ctx.JSON(http.StatusNotFound, errorResponse(err))
-			return
-		}
-		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
-		return
-	}
-	ctx.JSON(http.StatusOK, user)
-}
 
-type getUserByUsernameRequest struct {
-	Username string `uri:"username" binding:"required"`
-}
-
-func (server *Server) getUserByUsername(ctx *gin.Context) {
-	var req getUserByUsernameRequest
-	if err := ctx.ShouldBindUri(&req); err != nil {
-		ctx.JSON(http.StatusBadRequest, errorResponse(err))
-		return
-	}
-	user, err := server.store.GetUserByUsername(ctx, req.Username)
+	user, err := server.store.GetUserById(ctx, uid.ID)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			ctx.JSON(http.StatusNotFound, errorResponse(err))
@@ -116,8 +96,8 @@ func (server *Server) getUserByUsername(ctx *gin.Context) {
 }
 
 type listUsersParams struct {
-	PageID   int32 `form:"page_id" binding:"required, min=1"`
-	PageSize int32 `form:"page_size" binding:"required, min=5, max=10"`
+	PageID   int32 `form:"page_id" binding:"required,min=1"`
+	PageSize int32 `form:"page_size" binding:"required,min=5,max=10"`
 }
 
 func (server *Server) listUsers(ctx *gin.Context) {

@@ -9,25 +9,17 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type createBeatRequestUri struct {
-	ID int32 `uri:"id" binding:"required, min=1"`
-}
-
 type createBeatRequestParams struct {
-	Title string `json:"title"`
-	Genre string `json:"genre"`
-	Key   string `json:"key"`
-	Bpm   int16  `json:"bpm"`
-	Tags  string `json:"tags"`
+	CreatorID int32  `json:"creator_id" binding:"required,min=1"`
+	Title     string `json:"title"      binding:"required"`
+	Genre     string `json:"genre"      binding:"required"`
+	Key       string `json:"key"        binding:"required"`
+	Bpm       int16  `json:"bpm"        binding:"required"`
+	Tags      string `json:"tags"       binding:"required"`
 }
 
 func (server *Server) createBeat(ctx *gin.Context) {
-	var uid createBeatRequestUri
 	var req createBeatRequestParams
-	if err := ctx.ShouldBindUri(&uid); err != nil {
-		ctx.JSON(http.StatusBadRequest, errorResponse(err))
-		return
-	}
 	if err := ctx.ShouldBindJSON(&req); err != nil {
 		ctx.JSON(http.StatusBadRequest, errorResponse(err))
 		return
@@ -36,7 +28,7 @@ func (server *Server) createBeat(ctx *gin.Context) {
 	s3Key := "not implemented"
 
 	arg := db.CreateBeatParams{
-		CreatorID: uid.ID,
+		CreatorID: req.CreatorID,
 		Title:     req.Title,
 		Genre:     req.Genre,
 		Key:       req.Key,
@@ -53,15 +45,15 @@ func (server *Server) createBeat(ctx *gin.Context) {
 }
 
 type updateBeatRequestUri struct {
-	ID int32 `uri:"id" binding:"required, min=1"`
+	ID int32 `uri:"id" binding:"required,min=1"`
 }
 
 type updateBeatRequestParams struct {
 	Title string `json:"title" binding:"required"`
 	Genre string `json:"genre" binding:"required"`
 	Key   string `json:"key" binding:"required"`
-	Bpm   int16  `json:"bpm" binding:"required, min=20, max=999"`
-	Tags  string `json:"tags"`
+	Bpm   int16  `json:"bpm" binding:"required,min=20,max=999"`
+	Tags  string `json:"tags" binding:"required"`
 }
 
 func (server *Server) updateBeat(ctx *gin.Context) {
@@ -97,7 +89,7 @@ func (server *Server) updateBeat(ctx *gin.Context) {
 }
 
 type getBeatByIdRequest struct {
-	ID int32 `uri:"id" binding:"required, min=1"`
+	ID int32 `uri:"id" binding:"required,min=1"`
 }
 
 func (server *Server) getBeat(ctx *gin.Context) {
@@ -119,11 +111,11 @@ func (server *Server) getBeat(ctx *gin.Context) {
 }
 
 type listBeatsByIdRequest struct {
-	PageID   int32  `form:"page_id" binding:"required, min=1"`
-	PageSize int32  `form:"page_size" binding:"required, min=5, max=10"`
-	Order    string `form:"order" binding:"required, oneof=ID BPM KEY GENRE"`
-	BpmMin   int16  `form:"min" binding:"min=20, max=998"`
-	BpmMax   int16  `form:"max" binding:"min=21, max=999"`
+	PageID   int32  `form:"page_id" binding:"required,min=1"`
+	PageSize int32  `form:"page_size" binding:"required,min=5,max=10"`
+	Order    string `form:"order" binding:"required,oneof=ID BPM KEY GENRE"`
+	BpmMin   int16  `form:"min"`
+	BpmMax   int16  `form:"max"`
 	Key      string `form:"key"`
 	Genre    string `form:"genre"`
 }
@@ -131,6 +123,26 @@ type listBeatsByIdRequest struct {
 func (server *Server) listBeatsById(ctx *gin.Context) {
 	var req listBeatsByIdRequest
 	if err := ctx.ShouldBindQuery(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, errorResponse(err))
+		return
+	}
+
+	if req.Order == "BPM" {
+		if req.BpmMin == 0 || req.BpmMin < 20 || req.BpmMax == 0 || req.BpmMax <= req.BpmMin || req.BpmMax > 999 {
+			err := fmt.Errorf("invalid bpm range supplied")
+			ctx.JSON(http.StatusBadRequest, errorResponse(err))
+			return
+		}
+	}
+
+	if req.Order == "KEY" && req.Key == "" {
+		err := fmt.Errorf("invalid key supplied")
+		ctx.JSON(http.StatusBadRequest, errorResponse(err))
+		return
+	}
+
+	if req.Order == "GENRE" && req.Genre == "" {
+		err := fmt.Errorf("invalid genre supplied")
 		ctx.JSON(http.StatusBadRequest, errorResponse(err))
 		return
 	}
@@ -160,7 +172,7 @@ func (server *Server) listBeatsById(ctx *gin.Context) {
 			return
 		}
 		ctx.JSON(http.StatusOK, beats)
-	case "kEY":
+	case "KEY":
 		arg := db.ListBeatsByKeyParams{
 			Key:    req.Key,
 			Limit:  req.PageSize,
@@ -184,23 +196,19 @@ func (server *Server) listBeatsById(ctx *gin.Context) {
 			return
 		}
 		ctx.JSON(http.StatusOK, beats)
-	default:
-		err := fmt.Errorf("invalid 'order' query param value")
-		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
-		return
 	}
 }
 
 type listBeatsByCreatorIdRequestUri struct {
-	ID int32 `uri:"id" binding:"required, min=1"`
+	ID int32 `uri:"id" binding:"required,min=1"`
 }
 
 type listBeatsByCreatorIdRequestParams struct {
-	PageID   int32  `form:"page_id" binding:"required, min=1"`
-	PageSize int32  `form:"page_size" binding:"required, min=5, max=10"`
-	Order    string `form:"order" binding:"required, oneof=ID BPM KEY GENRE"`
-	BpmMin   int16  `form:"min" binding:"min=20, max=998"`
-	BpmMax   int16  `form:"max" binding:"min=21, max=999"`
+	PageID   int32  `form:"page_id" binding:"required,min=1"`
+	PageSize int32  `form:"page_size" binding:"required,min=5,max=10"`
+	Order    string `form:"order" binding:"required,oneof=ID BPM KEY GENRE"`
+	BpmMin   int16  `form:"min"`
+	BpmMax   int16  `form:"max"`
 	Key      string `form:"key"`
 	Genre    string `form:"genre"`
 }
@@ -212,7 +220,27 @@ func (server *Server) listBeatsByCreatorId(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, errorResponse(err))
 		return
 	}
-	if err := ctx.ShouldBindJSON(&req); err != nil {
+	if err := ctx.ShouldBindQuery(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, errorResponse(err))
+		return
+	}
+
+	if req.Order == "BPM" {
+		if req.BpmMin == 0 || req.BpmMin < 20 || req.BpmMax == 0 || req.BpmMax <= req.BpmMin || req.BpmMax > 999 {
+			err := fmt.Errorf("invalid bpm range supplied")
+			ctx.JSON(http.StatusBadRequest, errorResponse(err))
+			return
+		}
+	}
+
+	if req.Order == "KEY" && req.Key == "" {
+		err := fmt.Errorf("invalid key supplied")
+		ctx.JSON(http.StatusBadRequest, errorResponse(err))
+		return
+	}
+
+	if req.Order == "GENRE" && req.Genre == "" {
+		err := fmt.Errorf("invalid genre supplied")
 		ctx.JSON(http.StatusBadRequest, errorResponse(err))
 		return
 	}
@@ -270,9 +298,5 @@ func (server *Server) listBeatsByCreatorId(ctx *gin.Context) {
 			return
 		}
 		ctx.JSON(http.StatusOK, beats)
-	default:
-		err := fmt.Errorf("invalid 'order' query param value")
-		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
-		return
 	}
 }

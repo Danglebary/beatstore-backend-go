@@ -9,8 +9,8 @@ import (
 )
 
 type createLikeRequest struct {
-	UserID int32 `json:"user_id" binding:"required, min=1"`
-	BeatID int32 `json:"beat_id" binding:"required, min=1"`
+	UserID int32 `json:"user_id" binding:"required,min=1"`
+	BeatID int32 `json:"beat_id" binding:"required,min=1"`
 }
 
 func (server *Server) createLike(ctx *gin.Context) {
@@ -33,8 +33,8 @@ func (server *Server) createLike(ctx *gin.Context) {
 }
 
 type getLikeRequest struct {
-	UserID int32 `uri:"uid" binding:"required, min=1"`
-	BeatID int32 `uri:"bid" binding:"required, min=1"`
+	UserID int32 `uri:"uid" binding:"required,min=1"`
+	BeatID int32 `uri:"bid" binding:"required,min=1"`
 }
 
 func (server *Server) getLike(ctx *gin.Context) {
@@ -58,32 +58,36 @@ func (server *Server) getLike(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, like)
 }
 
-type listLikesByBeatIdRequestUri struct {
-	ID int32 `uri:"uid" binding:"required, min=1"`
+type listLikesByUserIDRequestUri struct {
+	ID int32 `uri:"id" binding:"required,min=1"`
 }
 
-type listLikesByBeatIdRequestParams struct {
-	PageID   int32 `form:"page_id" binding:"required, min=1"`
-	PageSize int32 `form:"page_size" binding:"required, min=5, max=10"`
+type listLikesByUserIDRequestParams struct {
+	PageID   int32 `form:"page_id" binding:"required,min=1"`
+	PageSize int32 `form:"page_size" binding:"required,min=5,max=10"`
 }
 
-func (server *Server) listLikesByBeatId(ctx *gin.Context) {
-	var bid listLikesByBeatIdRequestUri
-	var req listLikesByBeatIdRequestParams
-	if err := ctx.ShouldBindUri(&bid); err != nil {
+func (server *Server) listLikesByUserID(ctx *gin.Context) {
+	var uri listLikesByUserIDRequestUri
+	var req listLikesByUserIDRequestParams
+
+	if err := ctx.ShouldBindUri(&uri); err != nil {
 		ctx.JSON(http.StatusBadRequest, errorResponse(err))
 		return
 	}
-	if err := ctx.ShouldBindJSON(&req); err != nil {
+
+	if err := ctx.ShouldBindQuery(&req); err != nil {
 		ctx.JSON(http.StatusBadRequest, errorResponse(err))
 		return
 	}
-	arg := db.ListLikesByBeatParams{
-		BeatID: bid.ID,
+
+	arg := db.ListLikesByUserParams{
+		UserID: uri.ID,
 		Limit:  req.PageSize,
 		Offset: (req.PageID - 1) * req.PageSize,
 	}
-	likes, err := server.store.ListLikesByBeat(ctx, arg)
+
+	likes, err := server.store.ListLikesByUser(ctx, arg)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
 		return
@@ -91,32 +95,36 @@ func (server *Server) listLikesByBeatId(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, likes)
 }
 
-type listLikesByUserIdRequestUri struct {
-	ID int32 `uri:"uid" binding:"required, min=1"`
+type listLikesByBeatIDRequestUri struct {
+	ID int32 `uri:"id" binding:"required,min=1"`
 }
 
-type listLikesByUserIdRequestParams struct {
-	PageID   int32 `form:"page_id" binding:"required, min=1"`
-	PageSize int32 `form:"page_size" binding:"required, min=5, max=10"`
+type listLikesByBeatIDRequestParams struct {
+	PageID   int32 `form:"page_id" binding:"required,min=1"`
+	PageSize int32 `form:"page_size" binding:"required,min=5,max=10"`
 }
 
-func (server *Server) listLikesByUserId(ctx *gin.Context) {
-	var uid listLikesByUserIdRequestUri
-	var req listLikesByUserIdRequestParams
-	if err := ctx.ShouldBindUri(&uid); err != nil {
+func (server *Server) listLikesByBeatID(ctx *gin.Context) {
+	var uri listLikesByBeatIDRequestUri
+	var req listLikesByBeatIDRequestParams
+
+	if err := ctx.ShouldBindUri(&uri); err != nil {
 		ctx.JSON(http.StatusBadRequest, errorResponse(err))
 		return
 	}
-	if err := ctx.ShouldBindJSON(&req); err != nil {
+
+	if err := ctx.ShouldBindQuery(&req); err != nil {
 		ctx.JSON(http.StatusBadRequest, errorResponse(err))
 		return
 	}
-	arg := db.ListLikesByUserParams{
-		UserID: uid.ID,
+
+	arg := db.ListLikesByBeatParams{
+		BeatID: uri.ID,
 		Limit:  req.PageSize,
 		Offset: (req.PageID - 1) * req.PageSize,
 	}
-	likes, err := server.store.ListLikesByUser(ctx, arg)
+
+	likes, err := server.store.ListLikesByBeat(ctx, arg)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
 		return
